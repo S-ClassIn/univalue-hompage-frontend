@@ -7,12 +7,7 @@ const Header = () => {
   return (
     <S.HeaderLayout>
       <S.HeaderBox>
-        <Image
-          src="/univalueLogo.svg"
-          alt="Univalue Logo"
-          width={100}
-          height={40}
-        />
+        <img src="/univalueLogo.svg" alt="Univalue Logo" />
         <S.ELearnBtn>E러닝</S.ELearnBtn>
       </S.HeaderBox>
     </S.HeaderLayout>

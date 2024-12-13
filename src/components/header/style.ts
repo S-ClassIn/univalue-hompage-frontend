@@ -4,7 +4,8 @@ export const HeaderLayout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 40px;
+  padding: 40px 200px;
+  background-color: #21b8bd;
 `;
 
 export const HeaderBox = styled.div`
