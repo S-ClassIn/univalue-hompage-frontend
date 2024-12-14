@@ -7,8 +7,8 @@ interface DotProps {
 export const MainLayout = styled.div`
   display: flex;
   width: 100%;
-  height: 100vh;
-  padding: 40px 208px;
+  height: 106vh;
+  padding: 194px 208px;
   background-color: #21b8bd;
 `;
 
