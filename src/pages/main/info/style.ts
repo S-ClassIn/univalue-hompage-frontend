@@ -71,13 +71,13 @@ export const CardsWrapper = styled.div<CardsWrapperProps>`
 
 export const Card = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
   width: 397px;
   height: 502px;
   padding: 20px 20px 330px 20px;
-  flex-direction: column;
-  align-items: flex-start;
   gap: 91px;
-  flex-shrink: 0;
 
   margin: 0 10px;
   border-radius: 16px;
