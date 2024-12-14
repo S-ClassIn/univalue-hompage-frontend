@@ -12,6 +12,7 @@ export const HeaderLayout = styled.div<ModeProps>`
   padding: 40px 200px;
   background-color: #21b8bd;
   position: fixed;
+  z-index: 10;
 
   ${(props) =>
     props.isWhiteMode &&
