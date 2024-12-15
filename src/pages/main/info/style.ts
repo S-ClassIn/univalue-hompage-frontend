@@ -8,7 +8,7 @@ export const InfoLayout = styled.div`
   display: flex;
   width: 100%;
   height: 100vh;
-  padding: 188px 0 188px 104px;
+  margin: 188px 0 188px 104px;
   background-color: #fff;
 `;
 
@@ -16,7 +16,7 @@ export const TextBox = styled.div`
   margin-top: 40px;
   display: flex;
   flex-direction: column;
-  width: 40%;
+  width: 28%;
 `;
 
 export const Title1 = styled.p`
@@ -111,7 +111,7 @@ export const CardTags = styled.div`
 export const BtnBox = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding-right: 104px;
+  padding-right: 188px;
 `;
 
 export const ArrowButton = styled.button`

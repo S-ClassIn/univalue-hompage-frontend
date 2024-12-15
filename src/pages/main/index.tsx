@@ -1,10 +1,10 @@
 "use client";
 
-import styled from "styled-components";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Landing from "./landing";
 import Info from "./info";
+import Elearn from "./Elearn";
 
 const Main = () => {
   return (
@@ -12,6 +12,7 @@ const Main = () => {
       <Header />
       <Landing />
       <Info />
+      <Elearn />
       <Footer />
     </>
   );
