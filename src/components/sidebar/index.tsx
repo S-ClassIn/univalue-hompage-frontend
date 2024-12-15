@@ -1,0 +1,86 @@
+"use client";
+
+import styled, { css } from "styled-components";
+
+export const SideBarLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 293px;
+  height: 1024px;
+
+  .logo {
+    width: 99.478px;
+    height: 44px;
+    flex-shrink: 0;
+    margin: 40px 160px 0 32px;
+  }
+`;
+
+export const SideBarBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 83px;
+`;
+
+export const Home = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 12px 199px 12px 32px;
+
+  p {
+    padding-left: 16px;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%;
+    letter-spacing: -0.032px;
+  }
+
+  &:hover {
+    background-color: #e8e8e8;
+    border-radius: 12px;
+  }
+`;
+
+export const Upload = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 12px 0 12px 32px;
+
+  p {
+    padding-left: 16px;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 160%;
+    letter-spacing: -0.032px;
+  }
+
+  &:hover {
+    background-color: #e8e8e8;
+    border-radius: 12px;
+  }
+`;
+
+const Sidebar = () => {
+  return (
+    <SideBarLayout>
+      <img className="logo" src="/adminLogo.svg" alt="logo" />
+      <SideBarBox>
+        <Home>
+          <img src="/home.svg" alt="home" />
+          <p>홈</p>
+        </Home>
+
+        <Upload>
+          <img src="/upload.svg" alt="upload" />
+          <p>영상 업로드</p>
+        </Upload>
+      </SideBarBox>
+    </SideBarLayout>
+  );
+};
+
+export default Sidebar;
