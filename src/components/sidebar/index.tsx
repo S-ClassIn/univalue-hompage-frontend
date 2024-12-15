@@ -61,12 +61,18 @@ export const Upload = styled.div`
   }
 `;
 
-const Sidebar = ({ onUploadClick }: { onUploadClick: () => void }) => {
+const Sidebar = ({
+  onUploadClick,
+  onHomeClick,
+}: {
+  onUploadClick: () => void;
+  onHomeClick: () => void;
+}) => {
   return (
     <SideBarLayout>
       <img className="logo" src="/adminLogo.svg" alt="logo" />
       <SideBarBox>
-        <Home>
+        <Home onClick={onHomeClick}>
           <img src="/home.svg" alt="home" />
           <p>홈</p>
         </Home>
