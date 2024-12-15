@@ -1,6 +1,4 @@
-"use client";
-
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 export const SideBarLayout = styled.div`
   display: flex;
@@ -25,7 +23,7 @@ export const SideBarBox = styled.div`
 export const Home = styled.div`
   display: flex;
   align-items: center;
-  padding: 12px 199px 12px 32px;
+  padding: 8px 199px 8px 32px;
 
   p {
     padding-left: 16px;
@@ -33,7 +31,6 @@ export const Home = styled.div`
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
-    line-height: 160%;
     letter-spacing: -0.032px;
   }
 
@@ -46,7 +43,8 @@ export const Home = styled.div`
 export const Upload = styled.div`
   display: flex;
   align-items: center;
-  padding: 12px 0 12px 32px;
+  padding: 10px 0 10px 32px;
+  cursor: pointer;
 
   p {
     padding-left: 16px;
@@ -54,7 +52,6 @@ export const Upload = styled.div`
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
-    line-height: 160%;
     letter-spacing: -0.032px;
   }
 
@@ -64,7 +61,7 @@ export const Upload = styled.div`
   }
 `;
 
-const Sidebar = () => {
+const Sidebar = ({ onUploadClick }: { onUploadClick: () => void }) => {
   return (
     <SideBarLayout>
       <img className="logo" src="/adminLogo.svg" alt="logo" />
@@ -74,7 +71,7 @@ const Sidebar = () => {
           <p>홈</p>
         </Home>
 
-        <Upload>
+        <Upload onClick={onUploadClick}>
           <img src="/upload.svg" alt="upload" />
           <p>영상 업로드</p>
         </Upload>
