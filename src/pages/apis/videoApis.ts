@@ -1,4 +1,4 @@
-import { customAxios } from "@/utils/\bcusomAxios";
+import { customAxios } from "@/utils/cusomAxios";
 
 export const postVideoUpload = async (formData: FormData) => {
   const res = await customAxios.post("/api/video/upload", formData, {
