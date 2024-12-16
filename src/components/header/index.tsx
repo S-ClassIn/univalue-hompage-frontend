@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import * as S from "./style";
 
 const Header = () => {
@@ -26,7 +27,9 @@ const Header = () => {
     <S.HeaderLayout isWhiteMode={isWhiteMode}>
       <S.HeaderBox isWhiteMode={isWhiteMode}>
         <img src="/univalueLogo.svg" alt="Univalue Logo" />
-        <S.ELearnBtn>E러닝</S.ELearnBtn>
+        <Link href="/Elearning" passHref>
+          <S.ELearnBtn as="a">E러닝</S.ELearnBtn>
+        </Link>
       </S.HeaderBox>
     </S.HeaderLayout>
   );
