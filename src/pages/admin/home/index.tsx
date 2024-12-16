@@ -1,5 +1,7 @@
 "use client";
 
+import { lectureList, vidioPage } from "@/pages/apis/videoApis";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const HomeContainer = styled.div`
@@ -72,56 +74,39 @@ const IconBox = styled.div`
   padding-right: 40px;
 `;
 
+interface LectureInfo {
+  id: number;
+  videoName: string;
+  videoPath: string;
+  uuid: string;
+  title: string;
+  name: string;
+  role: string;
+}
+
 const HomePage = () => {
-  const cardsData = [
-    {
-      id: 1,
-      image: "/image-placeholder1.jpg",
-      text: "매력적인 목소리로 나를 변화시키는 방법 1",
-      name: "김성욱 이사",
-    },
-    {
-      id: 2,
-      image: "/image-placeholder2.jpg",
-      text: "매력적인 목소리로 나를 변화시키는 방법 2",
-      name: "김성욱 이사",
-    },
-    {
-      id: 3,
-      image: "/image-placeholder3.jpg",
-      text: "매력적인 목소리로 나를 변화시키는 방법 3",
-      name: "김성욱 이사",
-    },
-    {
-      id: 4,
-      image: "/image-placeholder4.jpg",
-      text: "매력적인 목소리로 나를 변화시키는 방법 4",
-      name: "김성욱 이사",
-    },
-    {
-      id: 5,
-      image: "/image-placeholder5.jpg",
-      text: "매력적인 목소리로 나를 변화시키는 방법 5",
-      name: "김성욱 이사",
-    },
-    {
-      id: 6,
-      image: "/image-placeholder6.jpg",
-      text: "매력적인 목소리로 나를 변화시키는 방법 6",
-      name: "김성욱 이사",
-    },
-  ];
+  const [lecture, setLecture] = useState<LectureInfo[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await lectureList();
+        setLecture(res);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
 
   return (
     <HomeContainer>
       <CardList>
-        {cardsData.map((item, index) => (
+        {lecture.map((item, index) => (
           <div key={item.id}>
             <Card>
               <InfoBox>
-                <Image src={item.image} alt={item.text} />
                 <TextBox>
-                  <Text>{item.text}</Text>
+                  <Text>{item.title}</Text>
                   <Name>{item.name}</Name>
                 </TextBox>
               </InfoBox>
@@ -130,7 +115,7 @@ const HomePage = () => {
                 <img src="/delete.svg" alt="icon" />
               </IconBox>
             </Card>
-            {index !== cardsData.length - 1 && <Divider />}{" "}
+            {index !== lecture.length - 1 && <Divider />}{" "}
           </div>
         ))}
       </CardList>

@@ -23,3 +23,8 @@ export const getVideoFile = async (fileName: string) =>
   await (
     await customAxios.get(`/api/files/${fileName}?type=video`)
   ).data;
+
+export const lectureList = async () =>
+  await (
+    await customAxios.get("api/video/list")
+  ).data;
