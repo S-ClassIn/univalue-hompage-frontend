@@ -24,6 +24,7 @@ export const Home = styled.div`
   display: flex;
   align-items: center;
   padding: 8px 199px 8px 32px;
+  cursor: pointer;
 
   p {
     padding-left: 16px;
