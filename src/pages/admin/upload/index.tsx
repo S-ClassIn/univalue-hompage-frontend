@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import * as S from "./style";
+import { postVideoUpload } from "@/pages/apis/videoApis";
 
 interface FileUploadModalProps {
   onClose: () => void;
@@ -11,6 +12,9 @@ const FileUploadModal = ({ onClose }: FileUploadModalProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [lectureTitle, setLectureTitle] = useState("");
+  const [lectureName, setLectureName] = useState("");
+  const [lecturePosition, setLecturePosition] = useState("");
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -47,6 +51,32 @@ const FileUploadModal = ({ onClose }: FileUploadModalProps) => {
     }
   };
 
+  const handleUpload = async () => {
+    if (!lectureTitle || !lectureName || !lecturePosition || !uploadedFile) {
+      alert("모든 필드를 입력하고 파일을 업로드해야 합니다.");
+      return;
+    }
+    console.log(uploadedFile);
+
+    try {
+      const formData = new FormData();
+      formData.append("title", lectureTitle);
+      formData.append("name", lectureName);
+      formData.append("role", lecturePosition);
+      formData.append("file", uploadedFile);
+      const response = await postVideoUpload(formData);
+      if (response) {
+        alert("업로드가 성공적으로 완료되었습니다.");
+        onClose();
+      } else {
+        alert("업로드 중 문제가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("업로드 실패:", error);
+      alert("업로드에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
   return (
     <S.ModalOverlay>
       <S.ModalContent>
@@ -64,6 +94,8 @@ const FileUploadModal = ({ onClose }: FileUploadModalProps) => {
                   type="text"
                   id="lectureTitle"
                   placeholder="제목을 입력해주세요"
+                  value={lectureTitle}
+                  onChange={(e) => setLectureTitle(e.target.value)}
                 />
               </S.FormGroup>
               <S.FormGroup>
@@ -72,6 +104,8 @@ const FileUploadModal = ({ onClose }: FileUploadModalProps) => {
                   type="text"
                   id="lectureName"
                   placeholder="이름을 입력해주세요"
+                  value={lectureName}
+                  onChange={(e) => setLectureName(e.target.value)}
                 />
               </S.FormGroup>
               <S.FormGroup>
@@ -80,6 +114,8 @@ const FileUploadModal = ({ onClose }: FileUploadModalProps) => {
                   type="text"
                   id="lecturePosition"
                   placeholder="직함을 입력해주세요"
+                  value={lecturePosition}
+                  onChange={(e) => setLecturePosition(e.target.value)}
                 />
               </S.FormGroup>
             </S.TitleBox>
@@ -95,7 +131,7 @@ const FileUploadModal = ({ onClose }: FileUploadModalProps) => {
               </S.FileInfo>
               <S.ButtonBox>
                 <S.CancelButton onClick={onClose}>취소</S.CancelButton>
-                <S.UploadButton>업로드</S.UploadButton>
+                <S.UploadButton onClick={handleUpload}>업로드</S.UploadButton>
               </S.ButtonBox>
             </S.FileBox>
           </S.UploadSuccessBox>
