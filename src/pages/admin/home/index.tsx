@@ -1,5 +1,7 @@
 "use client";
 
+import { lectureList, deleteLecture } from "@/pages/apis/videoApis";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const HomeContainer = styled.div`
@@ -21,7 +23,6 @@ const CardList = styled.div`
 const Card = styled.div`
   display: flex;
   align-items: center;
-
   justify-content: space-between;
   background-color: white;
   padding: 15px 0;
@@ -36,14 +37,6 @@ const Divider = styled.hr`
   margin: 0;
   border: none;
   border-top: 1px solid #e0e0e0;
-`;
-
-const Image = styled.img`
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-right: 15px;
 `;
 
 const TextBox = styled.div`
@@ -72,65 +65,66 @@ const IconBox = styled.div`
   padding-right: 40px;
 `;
 
+interface LectureInfo {
+  id: number;
+  videoName: string;
+  videoPath: string;
+  uuid: string;
+  title: string;
+  name: string;
+  role: string;
+}
+
 const HomePage = () => {
-  const cardsData = [
-    {
-      id: 1,
-      image: "/image-placeholder1.jpg",
-      text: "매력적인 목소리로 나를 변화시키는 방법 1",
-      name: "김성욱 이사",
-    },
-    {
-      id: 2,
-      image: "/image-placeholder2.jpg",
-      text: "매력적인 목소리로 나를 변화시키는 방법 2",
-      name: "김성욱 이사",
-    },
-    {
-      id: 3,
-      image: "/image-placeholder3.jpg",
-      text: "매력적인 목소리로 나를 변화시키는 방법 3",
-      name: "김성욱 이사",
-    },
-    {
-      id: 4,
-      image: "/image-placeholder4.jpg",
-      text: "매력적인 목소리로 나를 변화시키는 방법 4",
-      name: "김성욱 이사",
-    },
-    {
-      id: 5,
-      image: "/image-placeholder5.jpg",
-      text: "매력적인 목소리로 나를 변화시키는 방법 5",
-      name: "김성욱 이사",
-    },
-    {
-      id: 6,
-      image: "/image-placeholder6.jpg",
-      text: "매력적인 목소리로 나를 변화시키는 방법 6",
-      name: "김성욱 이사",
-    },
-  ];
+  const [lecture, setLecture] = useState<LectureInfo[]>([]);
+
+  const fetchLectures = async () => {
+    try {
+      const res = await lectureList();
+      setLecture(res);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteLecture(id);
+      setLecture((prev) => prev.filter((item) => item.id !== id)); // 삭제 후 상태 업데이트
+      alert("강의가 삭제되었습니다.");
+    } catch (err) {
+      console.error(err);
+      alert("강의 삭제에 실패했습니다.");
+    }
+  };
+
+  useEffect(() => {
+    fetchLectures();
+  }, []);
 
   return (
     <HomeContainer>
       <CardList>
-        {cardsData.map((item, index) => (
+        {lecture.map((item, index) => (
           <div key={item.id}>
             <Card>
               <InfoBox>
-                <Image src={item.image} alt={item.text} />
                 <TextBox>
-                  <Text>{item.text}</Text>
+                  <Text>{item.title}</Text>
                   <Name>{item.name}</Name>
                 </TextBox>
               </InfoBox>
               <IconBox>
                 <img src="/pen.svg" alt="icon" />
-                <img src="/delete.svg" alt="icon" />
+                <img
+                  src="/delete.svg"
+                  alt="icon"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleDelete(item.id)}
+                />
               </IconBox>
             </Card>
-            {index !== cardsData.length - 1 && <Divider />}{" "}
+            {index !== lecture.length - 1 && <Divider />}
           </div>
         ))}
       </CardList>
