@@ -61,6 +61,13 @@ const Elearning = () => {
         </S.CardGrid>
 
         <S.Pagination>
+          <S.PageButton
+            onClick={() =>
+              handlePageChange(currentPage > 1 ? currentPage - 1 : 1)
+            }
+          >
+            {"<"}
+          </S.PageButton>
           {Array.from({ length: totalPage }).map((_, index) => (
             <S.PageButton
               key={index}
@@ -70,6 +77,15 @@ const Elearning = () => {
               {index + 1}
             </S.PageButton>
           ))}
+          <S.PageButton
+            onClick={() =>
+              handlePageChange(
+                currentPage < totalPage ? currentPage + 1 : totalPage,
+              )
+            }
+          >
+            {">"}
+          </S.PageButton>
         </S.Pagination>
       </S.LearningLayout>
     </>

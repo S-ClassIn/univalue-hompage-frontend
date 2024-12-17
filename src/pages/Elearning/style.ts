@@ -8,7 +8,7 @@ export const HeaderLayout = styled.div`
   position: fixed;
   z-index: 10;
   background: #fff;
-  margin-top: 40px;
+  padding: 40px 0 40px 0;
 `;
 
 export const HeaderBox = styled.div`
@@ -80,6 +80,7 @@ export const CardInfo = styled.div`
 `;
 
 export const Name = styled.p`
+  display: flex;
   font-family: Pretendard;
   font-size: 16px;
   font-style: normal;
@@ -88,11 +89,12 @@ export const Name = styled.p`
 `;
 
 export const Job = styled.p`
+  display: flex;
   font-family: Pretendard;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  letter-spacing: 0.14px;
+  margin: 0;
 `;
 export const Pagination = styled.div`
   margin-top: 30px;
@@ -101,19 +103,14 @@ export const Pagination = styled.div`
   gap: 10px;
 `;
 
-export const PageButton = styled.button<{ isActive: boolean }>`
-  background-color: ${(props) => (props.isActive ? "#21b8bd" : "#f0f0f0")};
-  color: ${(props) => (props.isActive ? "#fff" : "#000")};
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
+export const PageButton = styled.div<{ isActive?: boolean }>`
+  color: ${(props) => (props.isActive ? "#0B0B0B" : "#B8B8B8")};
   cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-
-  &:hover {
-    background-color: #21b8bd;
-    color: #fff;
-  }
+  font-family: Pretendard;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  margin: 0 8px;
+  user-select: none;
+  padding-bottom: 170px;
 `;

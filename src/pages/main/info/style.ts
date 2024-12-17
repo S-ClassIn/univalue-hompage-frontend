@@ -72,20 +72,19 @@ export const CardsWrapper = styled.div<CardsWrapperProps>`
 export const Card = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  justify-content: space-between;
 
   width: 397px;
   height: 502px;
-  padding: 20px 20px 330px 20px;
-  gap: 91px;
-
   margin: 0 10px;
   border-radius: 16px;
   background-color: #f8f8f8;
 
   img {
     width: 100%;
-    border-radius: 10px 10px 0 0;
+    height: 310px;
+    object-fit: cover;
+    border-radius: 0 0 16px 16px;
   }
 `;
 
@@ -94,12 +93,13 @@ export const CardTitle = styled.p`
   font-size: 28px;
   font-weight: 700;
   letter-spacing: -0.28px;
+  padding: 20px;
 `;
 
 export const CardTags = styled.div`
   display: flex;
-  justify-content: center;
   gap: 5px;
+  padding: 20px 0 10px 20px;
 
   span {
     font-family: Pretendard;
@@ -108,6 +108,10 @@ export const CardTags = styled.div`
   }
 `;
 
+export const Footer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 export const BtnBox = styled.div`
   display: flex;
   justify-content: flex-end;
