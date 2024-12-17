@@ -60,6 +60,7 @@ export const Card = styled.div`
   background-color: #f7f7f7;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 `;
 
 export const CardTitle = styled.h3`
