@@ -3,6 +3,7 @@
 import { lectureList, deleteLecture } from "@/pages/apis/videoApis";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import EditVideoModal from "@/components/modal";
 
 const HomeContainer = styled.div`
   padding: 20px;
@@ -24,39 +25,10 @@ const Card = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  border-bottom: 1px solid #e0e0e0;
   background-color: white;
   padding: 15px 0;
-`;
-
-const InfoBox = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Divider = styled.hr`
-  margin: 0;
-  border: none;
-  border-top: 1px solid #e0e0e0;
-`;
-
-const TextBox = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const Text = styled.p`
-  font-family: Pretendard;
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-`;
-
-const Name = styled.p`
-  font-family: Pretendard;
-  font-size: 14px;
-  font-weight: 500;
-  color: #969696;
-  margin-top: 2px;
 `;
 
 const IconBox = styled.div`
@@ -75,12 +47,12 @@ interface LectureInfo {
   role: string;
 }
 
-interface HomePageProps {
-  onEdit: (lecture: LectureInfo) => void;
-}
-
-const HomePage = ({ onEdit }: HomePageProps) => {
+const HomePage = () => {
   const [lecture, setLecture] = useState<LectureInfo[]>([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedLecture, setSelectedLecture] = useState<LectureInfo | null>(
+    null,
+  );
 
   useEffect(() => {
     const fetchLectures = async () => {
@@ -105,6 +77,25 @@ const HomePage = ({ onEdit }: HomePageProps) => {
     }
   };
 
+  const handleEdit = (lecture: LectureInfo) => {
+    setSelectedLecture(lecture);
+    setIsEditModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsEditModalOpen(false);
+    setSelectedLecture(null);
+  };
+
+  const refreshLectures = async () => {
+    try {
+      const res = await lectureList();
+      setLecture(res);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <HomeContainer>
       <CardList>
@@ -118,7 +109,7 @@ const HomePage = ({ onEdit }: HomePageProps) => {
               <img
                 src="/pen.svg"
                 alt="edit"
-                onClick={() => onEdit(item)}
+                onClick={() => handleEdit(item)}
                 style={{ cursor: "pointer" }}
               />
               <img
@@ -131,6 +122,14 @@ const HomePage = ({ onEdit }: HomePageProps) => {
           </Card>
         ))}
       </CardList>
+
+      {isEditModalOpen && selectedLecture && (
+        <EditVideoModal
+          onClose={closeModal}
+          lectureInfo={selectedLecture}
+          refreshLectures={refreshLectures}
+        />
+      )}
     </HomeContainer>
   );
 };
