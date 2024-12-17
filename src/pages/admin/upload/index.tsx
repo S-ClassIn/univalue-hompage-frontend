@@ -1,14 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./style";
-import { postVideoUpload } from "@/pages/apis/videoApis";
+import { postVideoUpload, updateVideo } from "@/pages/apis/videoApis";
 
 interface FileUploadModalProps {
   onClose: () => void;
+  mode: "upload" | "edit";
+  lectureInfo?: {
+    id: number;
+    title: string;
+    name: string;
+    role: string;
+    videoPath: string;
+  } | null;
+  refreshLectures: () => void;
 }
 
-const FileUploadModal = ({ onClose }: FileUploadModalProps) => {
+const FileUploadModal = ({
+  onClose,
+  mode,
+  lectureInfo,
+  refreshLectures,
+}: FileUploadModalProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -16,14 +30,21 @@ const FileUploadModal = ({ onClose }: FileUploadModalProps) => {
   const [lectureName, setLectureName] = useState("");
   const [lecturePosition, setLecturePosition] = useState("");
 
+  useEffect(() => {
+    if (mode === "edit" && lectureInfo) {
+      setLectureTitle(lectureInfo.title);
+      setLectureName(lectureInfo.name);
+      setLecturePosition(lectureInfo.role);
+      setIsUploaded(true);
+    }
+  }, [mode, lectureInfo]);
+
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(true);
   };
 
-  const handleDragLeave = () => {
-    setIsDragging(false);
-  };
+  const handleDragLeave = () => setIsDragging(false);
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -52,28 +73,45 @@ const FileUploadModal = ({ onClose }: FileUploadModalProps) => {
   };
 
   const handleUpload = async () => {
-    if (!lectureTitle || !lectureName || !lecturePosition || !uploadedFile) {
-      alert("모든 필드를 입력하고 파일을 업로드해야 합니다.");
+    if (!lectureTitle || !lectureName || !lecturePosition) {
+      alert("모든 필드를 입력해주세요.");
       return;
     }
-    console.log(uploadedFile);
 
     try {
-      const formData = new FormData();
-      formData.append("title", lectureTitle);
-      formData.append("name", lectureName);
-      formData.append("role", lecturePosition);
-      formData.append("file", uploadedFile);
-      const response = await postVideoUpload(formData);
-      if (response) {
-        alert("업로드가 성공적으로 완료되었습니다.");
-        onClose();
+      if (mode === "edit" && lectureInfo) {
+        const updatedVideo = {
+          id: lectureInfo.id,
+          title: lectureTitle,
+          name: lectureName,
+          role: lecturePosition,
+        };
+
+        await updateVideo(updatedVideo);
+        alert("수정이 완료되었습니다.");
+      } else if (mode === "upload" && uploadedFile) {
+        const formData = new FormData();
+        formData.append("title", lectureTitle);
+        formData.append("name", lectureName);
+        formData.append("role", lecturePosition);
+        formData.append("file", uploadedFile);
+
+        const response = await postVideoUpload(formData);
+        if (response) {
+          alert("업로드가 완료되었습니다.");
+        } else {
+          alert("업로드 중 문제가 발생했습니다.");
+        }
       } else {
-        alert("업로드 중 문제가 발생했습니다.");
+        alert("파일을 업로드하거나 필요한 정보를 입력해주세요.");
+        return;
       }
+
+      onClose();
+      refreshLectures();
     } catch (error) {
-      console.error("업로드 실패:", error);
-      alert("업로드에 실패했습니다. 다시 시도해주세요.");
+      console.error("작업 실패:", error);
+      alert("작업에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -81,7 +119,7 @@ const FileUploadModal = ({ onClose }: FileUploadModalProps) => {
     <S.ModalOverlay>
       <S.ModalContent>
         <S.Header>
-          <p>E러닝 영상 업로드</p>
+          <p>{mode === "upload" ? "E러닝 영상 업로드" : "E러닝 영상 수정"}</p>
           <S.CloseButton onClick={onClose}>✕</S.CloseButton>
         </S.Header>
 
@@ -123,15 +161,21 @@ const FileUploadModal = ({ onClose }: FileUploadModalProps) => {
             <S.FileBox>
               <S.UploadedVideo
                 controls
-                src={URL.createObjectURL(uploadedFile)}
+                src={
+                  uploadedFile
+                    ? URL.createObjectURL(uploadedFile)
+                    : lectureInfo?.videoPath || ""
+                }
               />
               <S.FileInfo>
                 <S.FileName>파일 이름</S.FileName>
-                <S.VideoName>{uploadedFile.name}</S.VideoName>
+                <S.VideoName>{uploadedFile?.name || "기존 파일"}</S.VideoName>
               </S.FileInfo>
               <S.ButtonBox>
                 <S.CancelButton onClick={onClose}>취소</S.CancelButton>
-                <S.UploadButton onClick={handleUpload}>업로드</S.UploadButton>
+                <S.UploadButton onClick={handleUpload}>
+                  {mode === "upload" ? "업로드" : "수정 완료"}
+                </S.UploadButton>
               </S.ButtonBox>
             </S.FileBox>
           </S.UploadSuccessBox>

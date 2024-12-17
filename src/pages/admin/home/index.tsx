@@ -75,22 +75,29 @@ interface LectureInfo {
   role: string;
 }
 
-const HomePage = () => {
+interface HomePageProps {
+  onEdit: (lecture: LectureInfo) => void;
+}
+
+const HomePage = ({ onEdit }: HomePageProps) => {
   const [lecture, setLecture] = useState<LectureInfo[]>([]);
 
-  const fetchLectures = async () => {
-    try {
-      const res = await lectureList();
-      setLecture(res);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  useEffect(() => {
+    const fetchLectures = async () => {
+      try {
+        const res = await lectureList();
+        setLecture(res);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchLectures();
+  }, []);
 
   const handleDelete = async (id: number) => {
     try {
       await deleteLecture(id);
-      setLecture((prev) => prev.filter((item) => item.id !== id)); // 삭제 후 상태 업데이트
+      setLecture((prev) => prev.filter((item) => item.id !== id));
       alert("강의가 삭제되었습니다.");
     } catch (err) {
       console.error(err);
@@ -98,34 +105,30 @@ const HomePage = () => {
     }
   };
 
-  useEffect(() => {
-    fetchLectures();
-  }, []);
-
   return (
     <HomeContainer>
       <CardList>
-        {lecture.map((item, index) => (
-          <div key={item.id}>
-            <Card>
-              <InfoBox>
-                <TextBox>
-                  <Text>{item.title}</Text>
-                  <Name>{item.name}</Name>
-                </TextBox>
-              </InfoBox>
-              <IconBox>
-                <img src="/pen.svg" alt="icon" />
-                <img
-                  src="/delete.svg"
-                  alt="icon"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleDelete(item.id)}
-                />
-              </IconBox>
-            </Card>
-            {index !== lecture.length - 1 && <Divider />}
-          </div>
+        {lecture.map((item) => (
+          <Card key={item.id}>
+            <div>
+              <p>{item.title}</p>
+              <p>{item.name}</p>
+            </div>
+            <IconBox>
+              <img
+                src="/pen.svg"
+                alt="edit"
+                onClick={() => onEdit(item)}
+                style={{ cursor: "pointer" }}
+              />
+              <img
+                src="/delete.svg"
+                alt="delete"
+                onClick={() => handleDelete(item.id)}
+                style={{ cursor: "pointer" }}
+              />
+            </IconBox>
+          </Card>
         ))}
       </CardList>
     </HomeContainer>
