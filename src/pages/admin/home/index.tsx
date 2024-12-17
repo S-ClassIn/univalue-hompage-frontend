@@ -1,6 +1,6 @@
 "use client";
 
-import { lectureList, vidioPage } from "@/pages/apis/videoApis";
+import { lectureList, deleteLecture } from "@/pages/apis/videoApis";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -23,7 +23,6 @@ const CardList = styled.div`
 const Card = styled.div`
   display: flex;
   align-items: center;
-
   justify-content: space-between;
   background-color: white;
   padding: 15px 0;
@@ -38,14 +37,6 @@ const Divider = styled.hr`
   margin: 0;
   border: none;
   border-top: 1px solid #e0e0e0;
-`;
-
-const Image = styled.img`
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-right: 15px;
 `;
 
 const TextBox = styled.div`
@@ -87,15 +78,28 @@ interface LectureInfo {
 const HomePage = () => {
   const [lecture, setLecture] = useState<LectureInfo[]>([]);
 
+  const fetchLectures = async () => {
+    try {
+      const res = await lectureList();
+      setLecture(res);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteLecture(id);
+      setLecture((prev) => prev.filter((item) => item.id !== id)); // 삭제 후 상태 업데이트
+      alert("강의가 삭제되었습니다.");
+    } catch (err) {
+      console.error(err);
+      alert("강의 삭제에 실패했습니다.");
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await lectureList();
-        setLecture(res);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
+    fetchLectures();
   }, []);
 
   return (
@@ -112,10 +116,15 @@ const HomePage = () => {
               </InfoBox>
               <IconBox>
                 <img src="/pen.svg" alt="icon" />
-                <img src="/delete.svg" alt="icon" />
+                <img
+                  src="/delete.svg"
+                  alt="icon"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleDelete(item.id)}
+                />
               </IconBox>
             </Card>
-            {index !== lecture.length - 1 && <Divider />}{" "}
+            {index !== lecture.length - 1 && <Divider />}
           </div>
         ))}
       </CardList>
