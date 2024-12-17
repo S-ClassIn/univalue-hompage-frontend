@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import * as S from "./style";
 import { getVideoFile, vidioPage } from "../apis/videoApis";
+import router from "next/router";
 
 interface LectureInfo {
   id: number;
@@ -21,6 +22,12 @@ const Elearning = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+  const handleCardClick = (card: LectureInfo) => {
+    // sessionStorage에 강의 정보 저장
+    sessionStorage.setItem("selectedLecture", JSON.stringify(card));
+    // WatchVideo 페이지로 이동
+    router.push("/WatchVideo");
   };
 
   useEffect(() => {
@@ -50,7 +57,7 @@ const Elearning = () => {
         <S.Title>E러닝</S.Title>
         <S.CardGrid>
           {lecture.map((card) => (
-            <S.Card key={card.id}>
+            <S.Card key={card.id} onClick={() => handleCardClick(card)}>
               <S.CardTitle>{card.title}</S.CardTitle>
               <S.CardInfo>
                 <S.Name>{card.name}</S.Name>
