@@ -36,13 +36,11 @@ export const CardSlider = styled.div`
   overflow: hidden;
   flex-direction: column;
 `;
-
 export const CardsWrapper = styled.div<CardsWrapperProps>`
-  width: 100%;
-  height: 100%;
   display: flex;
-  transform: ${({ currentIndex }) => `translateX(-${currentIndex * 100}%)`};
   transition: transform 0.5s ease;
+  transform: ${({ currentIndex }) => `translateX(-${currentIndex * 348}px)`};
+  width: fit-content;
 `;
 
 export const Card = styled.div`
