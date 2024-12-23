@@ -65,8 +65,9 @@ export const CardSlider = styled.div`
 
 export const CardsWrapper = styled.div<CardsWrapperProps>`
   display: flex;
-  transform: ${({ currentIndex }) => `translateX(-${currentIndex * 100}%)`};
   transition: transform 0.5s ease;
+  transform: ${({ currentIndex }) => `translateX(-${currentIndex * 348}px)`};
+  width: fit-content;
 `;
 
 export const Card = styled.div`
