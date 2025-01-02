@@ -5,6 +5,8 @@ import FileUploadModal from "./upload";
 import HomePage from "./home";
 import { getCookie } from "@/utils/cookie/cookie";
 import { useRouter } from "next/router";
+import { useAuthService } from "@/utils/auth/useAuthService";
+import { useAxiosInterceptor } from "@/utils/cusomAxios";
 
 const AdminLayout = styled.div`
   display: flex;
@@ -55,15 +57,29 @@ const Admin = () => {
     setSelectedLecture(null);
   };
 
-  // // 로그인 상태 확인 및 리디렉션
-  // useEffect(() => {
-  //   if (getCookie("accessToken") && getCookie("refreshToken")) {
-  //     setIsLogin(true);
-  //   } else {
-  //     setIsLogin(false);
-  //     router.replace("/admin/login"); // 로그인 상태가 아니면 로그인 페이지로 리디렉션
-  //   }
-  // }, [router]);
+  // 로그인 상태 확인 및 리디렉션
+  useEffect(() => {
+    if (getCookie("accessToken") && getCookie("refreshToken")) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+      router.replace("/admin/login"); // 로그인 상태가 아니면 로그인 페이지로 리디렉션
+    }
+  }, [router]);
+
+  useEffect(() => {
+    const { hash } = window.location;
+    const params = new URLSearchParams(hash.substring(1));
+    const accessToken = params.get("access_token");
+
+    if (accessToken) {
+      console.log("Access Token Found:", accessToken);
+      useAuthService();
+      useAxiosInterceptor();
+    } else {
+      console.log("Access Token Not Found");
+    }
+  }, []);
 
   return (
     <AdminLayout>
@@ -75,7 +91,9 @@ const Admin = () => {
         {currentPage === "home" && (
           <HomePage
             key={refreshKey}
-            onEdit={(lecture) => handleModalOpen("edit", lecture)}
+            onEdit={(lecture: LectureInfo | undefined) =>
+              handleModalOpen("edit", lecture)
+            }
           />
         )}
       </ContentArea>
