@@ -9,20 +9,26 @@ const Info = () => {
     {
       id: 1,
       title: "온/오프라인 맞춤 컨설팅",
-      tags: ["#course", "#course", "#course"],
-      image: "/riku.jpg",
+      tags: ["#전문 인력", "#다수 경험 강사", "#취업 지원"],
+      image: "/consulting.png",
     },
     {
       id: 2,
       title: "창업·취업·진로 역량강화 프로그램",
-      tags: ["#course", "#course", "#course"],
-      image: "/riku2.jpg",
+      tags: ["#1대1 첨삭", "#플립 러닝"],
+      image: "/program.png",
     },
     {
       id: 3,
       title: "대강사 매칭 프로그램",
-      tags: ["#course", "#course", "#course"],
-      image: "/riku3.jpg",
+      tags: ["#다양한 분야", "#전문성", "#일대일"],
+      image: "/instructor.png",
+    },
+    {
+      id: 4,
+      title: "체험교육 콘텐츠 개발",
+      tags: ["#캠프", "#체험식 학습", "#꼼꼼한 계획 구성"],
+      image: "/education.png",
     },
   ];
 

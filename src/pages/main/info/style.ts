@@ -100,7 +100,7 @@ export const CardTitle = styled.p`
 export const CardTags = styled.div`
   display: flex;
   gap: 5px;
-  padding: 20px 0 10px 20px;
+  padding: 20px 0 20px 20px;
 
   span {
     font-family: Pretendard;

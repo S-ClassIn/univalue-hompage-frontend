@@ -59,7 +59,7 @@ export const Card = styled.div`
   flex-shrink: 0;
   background-color: #f7f7f7;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
   cursor: pointer;
 `;
 
@@ -70,6 +70,8 @@ export const CardTitle = styled.h3`
   font-weight: 700;
   letter-spacing: 0.2px;
   margin: 0;
+  text-align: left;
+
 `;
 
 export const CardInfo = styled.div`
